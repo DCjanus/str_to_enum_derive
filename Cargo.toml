@@ -2,6 +2,9 @@
 name = "str_to_enum_derive"
 version = "0.1.0"
 authors = ["DCjanus <1102035688@qq.com>"]
+description = "provide a simple way to convert static str ref to enum"
+repository = "https://github.com/DCjanus/str_to_enum_derive.git"
+license = "BSD-3-Clause"
 
 [dependencies]
 syn = "0.11.11"
