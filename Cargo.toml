@@ -7,8 +7,8 @@ repository = "https://github.com/DCjanus/str_to_enum_derive.git"
 license = "BSD-3-Clause"
 
 [dependencies]
-syn = "0.11.11"
-quote = "0.3.15"
+syn = "0.12"
+quote = "0.4"
 
 [lib]
 proc-macro = true
