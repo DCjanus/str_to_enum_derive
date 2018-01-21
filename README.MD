@@ -1,10 +1,6 @@
-[![Travis branch](https://img.shields.io/badge/rustc-nightly%20only-brightgreen.svg)](https://www.rust-lang.org/)
+[![Rust compiler level](https://img.shields.io/badge/rustc-stable-brightgreen.svg)](https://www.rust-lang.org/)
 [![Latest Version](https://img.shields.io/crates/v/str_to_enum_derive.svg)](https://crates.io/crates/str_to_enum_derive)
-[![Travis branch](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
-# warning
-
-Because of proc-macro, this lib is nightly only(1.22).
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 # example
 
@@ -12,7 +8,7 @@ Because of proc-macro, this lib is nightly only(1.22).
 
 ```toml
 [dependencies]
-str_to_enum_derive = "0.1.0"
+str_to_enum_derive = "0.2.0"
 ```
 
 `main.rs`
@@ -20,8 +16,6 @@ str_to_enum_derive = "0.1.0"
 ```rust
 #[macro_use]
 extern crate str_to_enum_derive;
-
-use std::str::FromStr;
 
 #[derive(StrToEnum, Debug, PartialEq, Eq)]
 enum HTTPMethod {
