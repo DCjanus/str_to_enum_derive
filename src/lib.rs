@@ -1,47 +1,42 @@
 extern crate proc_macro;
-extern crate syn;
 #[macro_use]
 extern crate quote;
+extern crate syn;
+
+use std::iter::repeat;
+use syn::{parse, Data, DeriveInput};
 
 use proc_macro::TokenStream;
 
-
 #[proc_macro_derive(StrToEnum)]
-pub fn str_to_enum(input: TokenStream) -> TokenStream {
-    let s = input.to_string();
-    let ast = syn::parse_derive_input(&s).unwrap();
+pub fn imp(input: TokenStream) -> TokenStream {
+    let ast: DeriveInput = parse(input).unwrap();
 
     let name = &ast.ident;
-    if let syn::Body::Enum(body) = ast.body {
-        let gen = impl_str_to_enum(name, body);
-        gen.parse().unwrap()
+    let iname = repeat(name);
+
+    if let Data::Enum(data) = ast.data {
+        let fields = data.variants.iter().map(|variant| variant.ident);
+
+        let names = data.variants
+            .iter()
+            .map(|variant| variant.ident.to_string());
+
+        let token = quote! {
+            impl ::std::str::FromStr for #name {
+                type Err = ();
+
+                fn from_str(s:&str) -> ::std::result::Result<Self, Self::Err> {
+                    match s {
+                        #(#names => Ok(#iname::#fields),)*
+                        _ => Err(())
+                    }
+                }
+            }
+        };
+
+        token.into()
     } else {
         panic!("Only work for enum");
     }
 }
-
-fn impl_str_to_enum(name: &syn::Ident, body: Vec<syn::Variant>) -> quote::Tokens {
-    let content = build_content(name, body);
-    quote!(
-        impl FromStr for #name{
-            type Err = ();
-
-            fn from_str(s:&str)->Result<Self,Self::Err>{
-                match s {
-                    #content
-                    _=>Err(())
-                }
-            }
-        }
-    )
-}
-
-fn build_content(name: &syn::Ident, body: Vec<syn::Variant>) -> syn::Ident {
-    let lines: Vec<String> = body.iter()
-        .map(|field| format!("\"{field}\" => Ok({enum_name}::{field}),\n",
-                             field = field.ident,
-                             enum_name = name))
-        .collect();
-    syn::Ident::from(lines.join(""))
-}
-
