@@ -1,14 +1,29 @@
 [package]
 name = "str_to_enum_derive"
-version = "0.2.0"
+edition = "2018"
+version = "0.3.0"
 authors = ["DCjanus <1102035688@qq.com>","doomsplayer <doomsplayer@gmail.com>"]
 description = "provide a simple way to convert static str ref to enum"
 repository = "https://github.com/DCjanus/str_to_enum_derive.git"
 license = "BSD-3-Clause"
 
-[dependencies]
-syn = "0.12"
-quote = "0.4"
-
 [lib]
 proc-macro = true
+
+[features]
+fxhasher = []
+
+[[example]]
+name = "basic"
+required-features = []
+
+[[example]]
+name = "basic_fxhasher"
+required-features = ["fxhasher"]
+
+[dependencies]
+fxhash = "0.2"
+
+quote = "0.6"
+proc-macro2 = "0.4"
+syn = { version = "0.15", features = ["extra-traits"] }
